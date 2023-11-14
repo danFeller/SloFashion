@@ -1,4 +1,9 @@
 package com.example.slofashion;
+import com.example.slofashion.datamodels.entities.Budget;
+import com.example.slofashion.datamodels.entities.Expenditure;
+import com.example.slofashion.datamodels.UsePrefs;
+
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,6 +24,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        storageTestingMethod();
+
 
         TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
         TextView receivedItemBudget = findViewById(R.id.receivedItemBudget);
@@ -45,8 +52,14 @@ public class HomeActivity extends AppCompatActivity {
             moneyBudget_layoutParams.setMargins(0, 0, 0, (int)Float.parseFloat(moneyBudget)*4);
             itemBudget_layoutParams.setMargins(0,0 , 0, (int)Float.parseFloat(itemBudget)*35);
 
-            receivedMoneyBudget.setText("money budget: "+moneyBudget);
-            receivedItemBudget.setText("item budget: "+itemBudget);
+            //receivedMoneyBudget.setText("money budget: "+moneyBudget);
+            //receivedItemBudget.setText("item budget: "+itemBudget);
+            receivedMoneyBudget.setText("money margin: "+moneyBudget_layoutParams.bottomMargin);
+            receivedItemBudget.setText("item margin: "+itemBudget_layoutParams.bottomMargin);
+        }
+        else{
+            moneyBudget_layoutParams.setMargins(0, 0, 0, 0);
+            itemBudget_layoutParams.setMargins(0,0 , 0, 0);
         }
         if(moneySpent != null && itemBought != null){
 
@@ -58,18 +71,29 @@ public class HomeActivity extends AppCompatActivity {
 
         }
         else{
-            moneyBudget_layoutParams.setMargins(0, 0, 0, 0);
-            itemBudget_layoutParams.setMargins(0,0 , 0, 0);
             moneyImg_layoutParams.height = 1;
             clothesImg_layoutParams.height = 1;
 
-
         }
 
 
         }
 
+    private void storageTestingMethod() {
+        //getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).edit().clear().apply();
+        List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
+        budgets.add(new Budget(
+                123,
+                42
+        ));
 
+        List<Expenditure> expenditures = UsePrefs.getAllExpenditures(getApplicationContext());
+        expenditures.add(new Expenditure(64, 16));
+        expenditures.add(new Expenditure(33, 5));
+
+        UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
+        UsePrefs.saveAllExpenditures(getApplicationContext(), expenditures);
+    }
 
         public void toModifyBudget(View v){
             Intent i = new Intent(this, BudgetSetupActivity.class);
