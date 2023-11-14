@@ -33,7 +33,8 @@ public class UsePrefs {
         saveObjectToSharedPreference(context,
             context.getString(R.string.preference_file_key),
             context.getString(R.string.preference_file_Budgets),
-            budgets);
+            budgets,
+            (Type) Budget.class);
     }
 
     public static List<Expenditure> getAllExpenditures(Context context) {
@@ -43,11 +44,12 @@ public class UsePrefs {
                 (Type) Expenditure.class);
     }
 
-    public static void saveAllExpenditures(Context context, List<Expenditure> budgets) {
+    public static void saveAllExpenditures(Context context, List<Expenditure> expenditures) {
         saveObjectToSharedPreference(context,
-                context.getString(R.string.preference_file_key),
-                context.getString(R.string.preference_file_Expenditures),
-                budgets);
+            context.getString(R.string.preference_file_key),
+            context.getString(R.string.preference_file_Expenditures),
+            expenditures,
+            (Type) Expenditure.class);
     }
 
     // Reference for below: https://stackoverflow.com/a/39435730
@@ -62,11 +64,12 @@ public class UsePrefs {
         return new ArrayList<>();
     }
 
-    private static void saveObjectToSharedPreference(Context context, String preferenceFileName, String serializedObjectKey, List<?> object) {
+    private static void saveObjectToSharedPreference(Context context, String preferenceFileName, String serializedObjectKey, List<?> object, Type classType) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         final Gson gson = Converters.registerAll(new GsonBuilder()).create();
-        String serializedObject = gson.toJson(object);
+        Type typeOfT = TypeToken.getParameterized(List.class, classType).getType();
+        String serializedObject = gson.toJson(object, typeOfT);
         sharedPreferencesEditor.putString(serializedObjectKey, serializedObject);
         sharedPreferencesEditor.apply();
     }
