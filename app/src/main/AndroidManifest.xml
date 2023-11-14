@@ -21,6 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".BudgetSetupActivity">
+        </activity>
+        <activity
+            android:name=".ManualEntryActivity">
+        </activity>
     </application>
 
 </manifest>
