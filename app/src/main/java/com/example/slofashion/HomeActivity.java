@@ -1,6 +1,8 @@
 package com.example.slofashion;
 
 import android.os.Bundle;
+import android.content.Intent;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,5 +35,11 @@ public class HomeActivity extends AppCompatActivity {
 
         UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
         UsePrefs.saveAllExpenditures(getApplicationContext(), expenditures);
+
+    }
+
+    public void toMonthlyRecap(){
+        Intent i = new Intent(this, MonthlyRecapActivity.class);
+        startActivity(i);
     }
 }
