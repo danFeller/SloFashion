@@ -64,8 +64,8 @@ public class HomeActivity extends AppCompatActivity {
             moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
             itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            receivedMoneyBudget.setText("money budget: "+moneyIntBudget);
-            receivedItemBudget.setText("item budget: "+itemIntBudget);
+            //receivedMoneyBudget.setText("money budget: "+moneyBudget_layoutParams.bottomMargin);
+            //receivedItemBudget.setText("item budget: "+itemBudget_layoutParams.bottomMargin);
 
         }
         else{
@@ -80,21 +80,49 @@ public class HomeActivity extends AppCompatActivity {
             moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
             itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            receivedMoneyBudget.setText("money budget: "+moneyIntBudget);
-            receivedItemBudget.setText("item budget: "+itemIntBudget);
+            //receivedMoneyBudget.setText("money budget: "+moneyIntBudget);
+            //receivedItemBudget.setText("item budget: "+itemIntBudget);
         }
         if(moneySpent != null && itemBought != null){
 
-            moneyImg_layoutParams.height = (int)Float.parseFloat(moneySpent)*4;
-            clothesImg_layoutParams.height = (int)Float.parseFloat(itemBought)*35;
+            List<Expenditure> expenditures = UsePrefs.getAllExpenditures(getApplicationContext());
+            expenditures.add(new Expenditure(
+                    (int)Float.parseFloat(moneySpent),
+                    (int)Float.parseFloat(itemBought)
+            ));
+            UsePrefs.saveAllExpenditures(getApplicationContext(), expenditures);
 
-            receivedMoneyBudget.setText("money spent: "+moneySpent);
-            receivedItemBudget.setText("item bought: "+itemBought);
+            int totalSpendings = 0;
+            int totalItems = 0;
+
+            for(int index = 0; index< expenditures.size(); index++){
+                totalSpendings += expenditures.get(index).getCost();
+                totalItems += expenditures.get(index).getClothes();
+            }
+
+            moneyImg_layoutParams.height = totalSpendings*4;
+            clothesImg_layoutParams.height = totalItems*35;
+
+            //receivedMoneyBudget.setText("money spent: "+totalSpendings);
+            //receivedItemBudget.setText("item bought: "+totalItems);
 
         }
         else{
-            moneyImg_layoutParams.height = 50;
-            clothesImg_layoutParams.height = 50;
+            int totalSpendings = 50;
+            int totalItems = 50;
+            List<Expenditure> expenditures = UsePrefs.getAllExpenditures(getApplicationContext());
+            if(expenditures.size() >= 1){
+                for(int index = 0; index< expenditures.size(); index++){
+                    totalSpendings += expenditures.get(index).getCost();
+                    totalItems += expenditures.get(index).getClothes();
+                }
+            }
+
+            //receivedMoneyBudget.setText("total spendings: "+totalSpendings);
+            //receivedItemBudget.setText("total items: "+totalItems);
+
+            moneyImg_layoutParams.height = totalSpendings;
+            clothesImg_layoutParams.height = totalItems;
 
         }
 
@@ -121,9 +149,8 @@ public class HomeActivity extends AppCompatActivity {
         TextView receivedItemBudget = findViewById(R.id.receivedItemBudget);
 
         int totalSpendings = 0;
-        for(int i = expenditures.size()-30; i< expenditures.size(); i++){
+        for(int i = 0; i< expenditures.size(); i++){
             totalSpendings += expenditures.get(i).getCost();
-
         }
 
 
