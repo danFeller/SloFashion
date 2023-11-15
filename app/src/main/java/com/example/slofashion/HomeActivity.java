@@ -54,8 +54,8 @@ public class HomeActivity extends AppCompatActivity {
 
             //receivedMoneyBudget.setText("money budget: "+moneyBudget);
             //receivedItemBudget.setText("item budget: "+itemBudget);
-            receivedMoneyBudget.setText("money margin: "+moneyBudget_layoutParams.bottomMargin);
-            receivedItemBudget.setText("item margin: "+itemBudget_layoutParams.bottomMargin);
+            //receivedMoneyBudget.setText("money margin: "+moneyBudget_layoutParams.bottomMargin);
+            //receivedItemBudget.setText("item margin: "+itemBudget_layoutParams.bottomMargin);
         }
         else{
             moneyBudget_layoutParams.setMargins(0, 0, 0, 0);
@@ -66,8 +66,8 @@ public class HomeActivity extends AppCompatActivity {
             moneyImg_layoutParams.height = (int)Float.parseFloat(moneySpent)*4;
             clothesImg_layoutParams.height = (int)Float.parseFloat(itemBought)*35;
 
-            receivedMoneyBudget.setText("money spent: "+moneySpent);
-            receivedItemBudget.setText("item bought: "+itemBought);
+            //receivedMoneyBudget.setText("money spent: "+moneySpent);
+            //receivedItemBudget.setText("item bought: "+itemBought);
 
         }
         else{
@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
-        //storageTestingMethod();
+        storageTestingMethod();
 
         }
 
@@ -95,8 +95,8 @@ public class HomeActivity extends AppCompatActivity {
         UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
         UsePrefs.saveAllExpenditures(getApplicationContext(), expenditures);
 
-        //TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
-        //receivedMoneyBudget.setText(budgets.toString());
+        TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
+        receivedMoneyBudget.setText("spent budget: "+expenditures.get(0).getCost());
 
 
     }

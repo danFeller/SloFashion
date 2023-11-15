@@ -27,12 +27,9 @@
         android:id="@+id/btn_launchManualEntry"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:elevation="10dp"
+        android:background="@android:color/transparent"
         android:onClick="toManualEntry"
-        app:backgroundTint="@null"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:backgroundTint="@null" />
 
     <Button
         android:id="@+id/btn_launchBudgetSetup"

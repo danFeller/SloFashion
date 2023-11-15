@@ -10,6 +10,24 @@ import java.time.Instant;
 public class Expenditure {
     @ColumnInfo(name = "cost")
     public int cost;
+
+    public int getClothes() {
+        return clothes;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    @Override
+    public String toString() {
+        return "Expenditure{" +
+                "cost=" + cost +
+                ", clothes=" + clothes +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
     @ColumnInfo(name = "clothes")
     public int clothes;
     @ColumnInfo(name = "createdAt")
