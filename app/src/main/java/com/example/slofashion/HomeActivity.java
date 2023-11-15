@@ -1,6 +1,4 @@
 package com.example.slofashion;
-<<<<<<< HEAD
-=======
 
 import android.os.Bundle;
 import android.content.Intent;
@@ -8,7 +6,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
->>>>>>> 3118205 (started app)
 import com.example.slofashion.datamodels.entities.Budget;
 import com.example.slofashion.datamodels.entities.Expenditure;
 import com.example.slofashion.datamodels.UsePrefs;
