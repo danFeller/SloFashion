@@ -45,8 +45,10 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
 
-    var room_version = "2.6.0"
+    val room_version = "2.6.0"
 
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation("com.github.stfalcon-studio:Chatkit:0.4.1")
+    implementation("com.google.android:flexbox:1.0.0")
 }
