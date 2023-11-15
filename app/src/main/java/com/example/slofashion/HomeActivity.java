@@ -115,7 +115,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void toManualEntry(View v){
-
         Intent i = new Intent(this, ManualEntryActivity.class);
         startActivity(i);
     }

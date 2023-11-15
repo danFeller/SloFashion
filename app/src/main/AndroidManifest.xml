@@ -27,6 +27,9 @@
         <activity
             android:name=".ManualEntryActivity">
         </activity>
+        <activity
+            android:name=".MonthlyRecapActivity">
+        </activity>
     </application>
 
 </manifest>

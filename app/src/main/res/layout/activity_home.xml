@@ -41,6 +41,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_launchMonthlyRecap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Monthly Recap"
+        android:onClick="toMonthlyRecap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/div_middle"
         android:layout_width="match_parent"
@@ -79,15 +89,5 @@
         android:layout_marginBottom="0dp"
         android:src="@drawable/pile_clothes"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_launchMonthlyRecap"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Button"-->
-<!--        android:onClick="toMonthlyRecap"-->
-<!--        tools:layout_editor_absoluteX="161dp"-->
-<!--        tools:layout_editor_absoluteY="445dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
