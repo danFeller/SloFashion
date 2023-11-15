@@ -63,14 +63,14 @@
         android:id="@+id/div_moneyBudget"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="0dp"
         android:background="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
 
     <ImageView
         android:id="@+id/moneyImg"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="0dp"
         android:src="@drawable/pile_money"
         app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
@@ -79,13 +79,13 @@
         android:id="@+id/div_itemBudget"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="0dp"
         android:background="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent" />
     <ImageView
         android:id="@+id/clothesImg"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="0dp"
         android:src="@drawable/pile_clothes"
         app:layout_constraintBottom_toBottomOf="parent" />
