@@ -76,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
+        //storageTestingMethod();
 
         }
 
@@ -93,6 +94,11 @@ public class HomeActivity extends AppCompatActivity {
 
         UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
         UsePrefs.saveAllExpenditures(getApplicationContext(), expenditures);
+
+        //TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
+        //receivedMoneyBudget.setText(budgets.toString());
+
+
     }
 
         public void toModifyBudget(View v){
