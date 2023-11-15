@@ -1,4 +1,11 @@
 package com.example.slofashion;
+
+import android.os.Bundle;
+import android.content.Intent;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.slofashion.datamodels.entities.Budget;
 import com.example.slofashion.datamodels.entities.Expenditure;
 import com.example.slofashion.datamodels.UsePrefs;
@@ -18,8 +25,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class HomeActivity extends AppCompatActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,20 +161,22 @@ public class HomeActivity extends AppCompatActivity {
 
         receivedMoneyBudget.setText("total Spendings: "+totalSpendings);
         receivedItemBudget.setText("expenditure info: "+expenditures.get(0).toString());
-
-
     }
 
-        public void toModifyBudget(View v){
-            Intent i = new Intent(this, BudgetSetupActivity.class);
-            startActivity(i);
-        }
-
-        public void toManualEntry(View v){
-
-            Intent i = new Intent(this, ManualEntryActivity.class);
-            startActivity(i);
-        }
-
+    public void toMonthlyRecap(View v){
+        Intent i = new Intent(this, MonthlyRecapActivity.class);
+        startActivity(i);
     }
+
+    public void toModifyBudget(View v){
+        Intent i = new Intent(this, BudgetSetupActivity.class);
+        startActivity(i);
+    }
+
+    public void toManualEntry(View v){
+        Intent i = new Intent(this, ManualEntryActivity.class);
+        startActivity(i);
+    }
+
+}
 
