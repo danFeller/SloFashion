@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
         receivedMoneyBudget.setText("spent budget: "+expenditures.get(0).getCost());
     }
 
-    public void toMonthlyRecap(){
+    public void toMonthlyRecap(View v){
         Intent i = new Intent(this, MonthlyRecapActivity.class);
         startActivity(i);
     }
