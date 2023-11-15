@@ -38,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void toMonthlyRecap(){
+    public void toMonthlyRecap(View v){
         Intent i = new Intent(this, MonthlyRecapActivity.class);
         startActivity(i);
     }
