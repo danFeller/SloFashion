@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        storageTestingMethod();
+        //storageTestingMethod();
 
 
         TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
@@ -49,34 +49,56 @@ public class HomeActivity extends AppCompatActivity {
 
 
         if(moneyBudget != null && itemBudget != null){
-            moneyBudget_layoutParams.setMargins(0, 0, 0, (int)Float.parseFloat(moneyBudget)*4);
-            itemBudget_layoutParams.setMargins(0,0 , 0, (int)Float.parseFloat(itemBudget)*35);
+            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
+            budgets.add(new Budget(
+                    (int)Float.parseFloat(moneyBudget),
+                    (int)Float.parseFloat(itemBudget)
+            ));
+            UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
 
-            //receivedMoneyBudget.setText("money budget: "+moneyBudget);
-            //receivedItemBudget.setText("item budget: "+itemBudget);
-            //receivedMoneyBudget.setText("money margin: "+moneyBudget_layoutParams.bottomMargin);
-            //receivedItemBudget.setText("item margin: "+itemBudget_layoutParams.bottomMargin);
+
+            int moneyIntBudget = budgets.get(budgets.size()-1).getCostBudget();
+            int itemIntBudget = budgets.get(budgets.size()-1).getClothesBudget();
+
+
+            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
+            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
+
+            receivedMoneyBudget.setText("money budget: "+moneyIntBudget);
+            receivedItemBudget.setText("item budget: "+itemIntBudget);
+
         }
         else{
-            moneyBudget_layoutParams.setMargins(0, 0, 0, 0);
-            itemBudget_layoutParams.setMargins(0,0 , 0, 0);
+            int moneyIntBudget = 0;
+            int itemIntBudget = 0;
+            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
+            if(budgets.size() >= 1){
+                 moneyIntBudget = budgets.get(budgets.size()-1).getCostBudget();
+                 itemIntBudget = budgets.get(budgets.size()-1).getClothesBudget();
+            }
+
+            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
+            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
+
+            receivedMoneyBudget.setText("money budget: "+moneyIntBudget);
+            receivedItemBudget.setText("item budget: "+itemIntBudget);
         }
         if(moneySpent != null && itemBought != null){
 
             moneyImg_layoutParams.height = (int)Float.parseFloat(moneySpent)*4;
             clothesImg_layoutParams.height = (int)Float.parseFloat(itemBought)*35;
 
-            //receivedMoneyBudget.setText("money spent: "+moneySpent);
-            //receivedItemBudget.setText("item bought: "+itemBought);
+            receivedMoneyBudget.setText("money spent: "+moneySpent);
+            receivedItemBudget.setText("item bought: "+itemBought);
 
         }
         else{
-            moneyImg_layoutParams.height = 1;
-            clothesImg_layoutParams.height = 1;
+            moneyImg_layoutParams.height = 50;
+            clothesImg_layoutParams.height = 50;
 
         }
 
-        storageTestingMethod();
+        //storageTestingMethod();
 
         }
 
@@ -96,7 +118,17 @@ public class HomeActivity extends AppCompatActivity {
         UsePrefs.saveAllExpenditures(getApplicationContext(), expenditures);
 
         TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
-        receivedMoneyBudget.setText("spent budget: "+expenditures.get(0).getCost());
+        TextView receivedItemBudget = findViewById(R.id.receivedItemBudget);
+
+        int totalSpendings = 0;
+        for(int i = expenditures.size()-30; i< expenditures.size(); i++){
+            totalSpendings += expenditures.get(i).getCost();
+
+        }
+
+
+        receivedMoneyBudget.setText("total Spendings: "+totalSpendings);
+        receivedItemBudget.setText("expenditure info: "+expenditures.get(0).toString());
 
 
     }
