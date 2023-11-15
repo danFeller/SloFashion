@@ -1,4 +1,14 @@
 package com.example.slofashion;
+<<<<<<< HEAD
+=======
+
+import android.os.Bundle;
+import android.content.Intent;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+>>>>>>> 3118205 (started app)
 import com.example.slofashion.datamodels.entities.Budget;
 import com.example.slofashion.datamodels.entities.Expenditure;
 import com.example.slofashion.datamodels.UsePrefs;
@@ -18,8 +28,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class HomeActivity extends AppCompatActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,20 +105,23 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
         receivedMoneyBudget.setText("spent budget: "+expenditures.get(0).getCost());
-
-
     }
 
-        public void toModifyBudget(View v){
-            Intent i = new Intent(this, BudgetSetupActivity.class);
-            startActivity(i);
-        }
-
-        public void toManualEntry(View v){
-
-            Intent i = new Intent(this, ManualEntryActivity.class);
-            startActivity(i);
-        }
-
+    public void toMonthlyRecap(){
+        Intent i = new Intent(this, MonthlyRecapActivity.class);
+        startActivity(i);
     }
+
+    public void toModifyBudget(View v){
+        Intent i = new Intent(this, BudgetSetupActivity.class);
+        startActivity(i);
+    }
+
+    public void toManualEntry(View v){
+
+        Intent i = new Intent(this, ManualEntryActivity.class);
+        startActivity(i);
+    }
+
+}
 
