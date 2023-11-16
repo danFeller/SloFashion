@@ -42,4 +42,6 @@ public class MonthlyRecapActivity extends AppCompatActivity {
         netMoneySpent.setText("$" + totalSpendings + " spent");
         itemsPurchased.setText(totalItems + " items purchased");
     }
+
+
 }

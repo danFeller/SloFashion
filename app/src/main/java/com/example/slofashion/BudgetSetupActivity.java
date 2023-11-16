@@ -7,12 +7,31 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.slofashion.datamodels.UsePrefs;
+import com.example.slofashion.datamodels.entities.Budget;
+
+import java.util.List;
+
 public class BudgetSetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budgetsetup);
+
+        EditText prevMoneyBudget = findViewById(R.id.editText_prevMoneyBudget);
+        EditText prevItemBudget = findViewById(R.id.editText_prevItemBudget);
+
+        int moneyIntBudget = 0;
+        int itemIntBudget = 0;
+        List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
+        if(budgets.size() >= 1){
+            moneyIntBudget = budgets.get(budgets.size()-1).getCostBudget();
+            itemIntBudget = budgets.get(budgets.size()-1).getClothesBudget();
+        }
+
+        prevMoneyBudget.setText("Previous Monetary Budget: "+moneyIntBudget);
+        prevItemBudget.setText("Previous Item Budget: "+itemIntBudget);
 
     }
 

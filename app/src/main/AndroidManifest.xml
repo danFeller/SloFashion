@@ -30,6 +30,9 @@
         <activity
             android:name=".MonthlyRecapActivity">
         </activity>
+        <activity
+            android:name=".FastFashionStatsActivity">
+        </activity>
     </application>
 
 </manifest>

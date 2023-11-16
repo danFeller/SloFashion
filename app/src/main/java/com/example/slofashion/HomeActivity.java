@@ -69,8 +69,8 @@ public class HomeActivity extends AppCompatActivity {
             moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
             itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            //receivedMoneyBudget.setText("money budget: "+moneyBudget_layoutParams.bottomMargin);
-            //receivedItemBudget.setText("item budget: "+itemBudget_layoutParams.bottomMargin);
+            receivedMoneyBudget.setText("Monetary Budget: "+moneyIntBudget);
+            receivedItemBudget.setText("Item Budget: "+itemIntBudget);
 
         }
         else{
@@ -85,8 +85,8 @@ public class HomeActivity extends AppCompatActivity {
             moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
             itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            //receivedMoneyBudget.setText("money budget: "+moneyIntBudget);
-            //receivedItemBudget.setText("item budget: "+itemIntBudget);
+            receivedMoneyBudget.setText("Monetary Budget: "+moneyIntBudget);
+            receivedItemBudget.setText("Item Budget: "+itemIntBudget);
         }
         if(moneySpent != null && itemBought != null){
 
@@ -161,6 +161,11 @@ public class HomeActivity extends AppCompatActivity {
 
         receivedMoneyBudget.setText("total Spendings: "+totalSpendings);
         receivedItemBudget.setText("expenditure info: "+expenditures.get(0).toString());
+
+        // how to use helper methods
+//        int totalCost = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.cost).sum();
+//        int totalClothes = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.clothes).sum();
+//        Optional<Budget> budget = UsePrefs.getBudgetForCurrentMonth(getApplicationContext());
     }
 
     public void toMonthlyRecap(View v){

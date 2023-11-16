@@ -23,10 +23,20 @@ public class ManualEntryActivity extends AppCompatActivity {
         String moneySpent = setMoneySpent.getText().toString();
         String itemBought = setItemBought.getText().toString();
 
-        Intent i = new Intent(this, HomeActivity.class);
-        i.putExtra("money_spent", moneySpent);
-        i.putExtra("item_bought", itemBought);
+        int moneyIntSpent = (int)Float.parseFloat(moneySpent);
+        int itemIntBought = (int)Float.parseFloat(itemBought);
 
+        Intent i;
+        if(moneyIntSpent/itemIntBought < 10){
+            i = new Intent(this, FastFashionStatsActivity.class);
+
+        }
+        else{
+            i = new Intent(this, HomeActivity.class);
+            i.putExtra("money_spent", moneySpent);
+            i.putExtra("item_bought", itemBought);
+
+        }
         startActivity(i);
     }
 }
