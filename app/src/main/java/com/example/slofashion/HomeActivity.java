@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Create the PendingIntent.
                 PendingIntent notifyPendingIntent = PendingIntent.getActivity(
                         context, (int) (Math.random() * 50), notifyIntent,
-                        PendingIntent.FLAG_IMMUTABLE
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 );
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1234");
