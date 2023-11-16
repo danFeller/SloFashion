@@ -7,12 +7,87 @@
     tools:context=".HomeActivity">
 
     <TextView
+        android:id="@+id/receivedMoneyBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Piggy bank and Clothes pile here!"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_launchBudgetSetup" />
+
+    <TextView
+        android:id="@+id/receivedItemBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/receivedMoneyBudget" />
+
+
+    <Button
+        android:id="@+id/btn_launchManualEntry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:onClick="toManualEntry"
+        app:backgroundTint="@null" />
+
+    <Button
+        android:id="@+id/btn_launchBudgetSetup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="toModifyBudget"
+        android:text="Modify Budget"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_launchMonthlyRecap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Monthly Recap"
+        android:onClick="toMonthlyRecap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/div_middle"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/holo_blue_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_launchBudgetSetup" />
+
+    <View
+        android:id="@+id/div_moneyBudget"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginBottom="0dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
+
+    <ImageView
+        android:id="@+id/moneyImg"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="0dp"
+        android:src="@drawable/pile_money"
+        app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
+
+    <View
+        android:id="@+id/div_itemBudget"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginBottom="0dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    <ImageView
+        android:id="@+id/clothesImg"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="0dp"
+        android:src="@drawable/pile_clothes"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

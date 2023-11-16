@@ -12,8 +12,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Class used to interact with the KV pairs in shared preferences
@@ -31,10 +38,10 @@ public class UsePrefs {
 
     public static void saveAllBudgets(Context context, List<Budget> budgets) {
         saveObjectToSharedPreference(context,
-            context.getString(R.string.preference_file_key),
-            context.getString(R.string.preference_file_Budgets),
-            budgets,
-            (Type) Budget.class);
+                context.getString(R.string.preference_file_key),
+                context.getString(R.string.preference_file_Budgets),
+                budgets,
+                (Type) Budget.class);
     }
 
     public static List<Expenditure> getAllExpenditures(Context context) {
@@ -46,10 +53,32 @@ public class UsePrefs {
 
     public static void saveAllExpenditures(Context context, List<Expenditure> expenditures) {
         saveObjectToSharedPreference(context,
-            context.getString(R.string.preference_file_key),
-            context.getString(R.string.preference_file_Expenditures),
-            expenditures,
-            (Type) Expenditure.class);
+                context.getString(R.string.preference_file_key),
+                context.getString(R.string.preference_file_Expenditures),
+                expenditures,
+                (Type) Expenditure.class);
+    }
+
+    // Helpers to get some easy data
+
+    public static Optional<Budget> getBudgetForCurrentMonth(Context context) {
+        List<Budget> budgets = getAllBudgets(context);
+        return budgets.stream()
+                .filter(b -> b.yearMonth.query(UsePrefs::isCurrentMonth))
+                .findFirst();
+    }
+
+    public static List<Expenditure> getAllExpendituresForCurrentMonth(Context context) {
+        List<Expenditure> expenditures = getAllExpenditures(context);
+        return expenditures.stream()
+                .filter(e -> e.createdAt.atZone(ZoneId.systemDefault()).query(UsePrefs::isCurrentMonth))
+                .collect(Collectors.toList());
+    }
+
+    public static boolean isCurrentMonth(TemporalAccessor temporal) {
+        LocalDate now = LocalDate.now();
+        LocalDate other = LocalDate.from(temporal);
+        return Month.from(now) == Month.from(other) && Year.from(now).equals(Year.from(other));
     }
 
     // Reference for below: https://stackoverflow.com/a/39435730

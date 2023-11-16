@@ -17,6 +17,22 @@ public class Budget {
     @ColumnInfo(name = "yearMonth")
     public LocalDate yearMonth;
 
+    public int getCostBudget() {
+        return costBudget;
+    }
+    public int getClothesBudget(){
+        return clothesBudget;
+    }
+
+    @Override
+    public String toString() {
+        return "Budget{" +
+                "costBudget=" + costBudget +
+                ", clothesBudget=" + clothesBudget +
+                ", yearMonth=" + yearMonth +
+                '}';
+    }
+
     public Budget(int costBudget, int clothesBudget) {
         this.costBudget = costBudget;
         this.clothesBudget = clothesBudget;
