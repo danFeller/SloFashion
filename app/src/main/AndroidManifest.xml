@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SloFashion"
         tools:targetApi="31">
-
         <activity
             android:name=".HomeActivity"
             android:exported="true">
@@ -30,6 +29,9 @@
         </activity>
         <activity
             android:name=".MonthlyRecapActivity">
+        </activity>
+        <activity
+            android:name=".FastFashionStatsActivity">
         </activity>
         <activity
             android:name=".DialogueActivity">
