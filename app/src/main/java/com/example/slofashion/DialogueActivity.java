@@ -25,7 +25,7 @@ import java.util.Date;
 public class DialogueActivity extends AppCompatActivity implements View.OnClickListener {
 
     /** Invoke different conversations based on DialogueType */
-    enum DialogueType {
+    public enum DialogueType {
         ENTER_STORE,
         LEAVE_STORE
     }
@@ -88,7 +88,8 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
             dialogueType = DialogueType.valueOf(strDialogueType);
         } catch (IllegalArgumentException | NullPointerException e) {
             // TODO: shouldn't need this here, intent should be passed to get to this activity
-            dialogueType = DialogueType.LEAVE_STORE;
+            // but this is an alright default
+            dialogueType = DialogueType.ENTER_STORE;
         }
 
         dialogueStep = 0;
