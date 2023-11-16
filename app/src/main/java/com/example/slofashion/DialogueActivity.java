@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.slofashion.datamodels.Author;
 import com.example.slofashion.datamodels.DialogueAction;
 import com.example.slofashion.datamodels.Message;
+import com.example.slofashion.datamodels.UsePrefs;
+import com.example.slofashion.datamodels.entities.Budget;
 import com.google.android.material.slider.RangeSlider;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -44,23 +46,26 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
 
     // Dialogue action fields
     final DialogueAction[] enterDialogue = new DialogueAction[] {
-            DialogueAction.GenChatbotAction("You have $%s left in your budget"),
+            DialogueAction.GenChatbotAction("You have ${{cost}} and {{clothes}} clothes left in your budget"),
             DialogueAction.GenChatbotAction("How much are you spending today?"),
-            new DialogueAction(true, null, 0, DialogueAction.InputType.MONEY),
-            DialogueAction.GenChatbotAction("You will be left with $%s in the budget after this trip"),
-            new DialogueAction(true, null, -4, DialogueAction.InputType.CONFIRM),
+            new DialogueAction(true, null, 0, DialogueAction.InputType.MONEY, DialogueAction.InputTarget.COST),
+            DialogueAction.GenChatbotAction("You will be left with ${{res_cost}} in the budget after this trip"),
+            new DialogueAction(true, null, -4, DialogueAction.InputType.CONFIRM, null),
             DialogueAction.GenChatbotAction("How many clothes are you purchasing today?"),
-            new DialogueAction(true, null, 0, DialogueAction.InputType.MONEY),
-            DialogueAction.GenChatbotAction("You will be left with %s clothes left in the budget after this trip"),
-            new DialogueAction(true, null, -4, DialogueAction.InputType.CONFIRM),
+            new DialogueAction(true, null, 0, DialogueAction.InputType.MONEY, DialogueAction.InputTarget.CLOTHES),
+            DialogueAction.GenChatbotAction("You will be left with {{res_clothes}} clothes left in the budget after this trip"),
+            new DialogueAction(true, null, -4, DialogueAction.InputType.CONFIRM, null),
     };
     final DialogueAction[] exitDialogue = new DialogueAction[] {
-            DialogueAction.GenChatbotAction("You have $%s left in your budget"),
+            DialogueAction.GenChatbotAction("You have ${{cost}} and {{clothes}} clothes left in your budget"),
             DialogueAction.GenChatbotAction("How much did you spend?"),
-            new DialogueAction(true, null, 0, DialogueAction.InputType.MONEY),
-            DialogueAction.GenChatbotAction("Filler 3"),
-            DialogueAction.GenChatbotAction("Done. You will be left with $y in the budget after this trip"),
-            DialogueAction.GenChatbotAction("Filler 4"),
+            new DialogueAction(true, null, 0, DialogueAction.InputType.MONEY, DialogueAction.InputTarget.COST),
+            DialogueAction.GenChatbotAction("You will be left with ${{res_cost}} in the budget after this trip"),
+            new DialogueAction(true, null, -4, DialogueAction.InputType.CONFIRM, null),
+            DialogueAction.GenChatbotAction("How many clothes did you purchase?"),
+            new DialogueAction(true, null, 0, DialogueAction.InputType.MONEY, DialogueAction.InputTarget.CLOTHES),
+            DialogueAction.GenChatbotAction("You will be left with {{res_clothes}} clothes left in the budget after this trip"),
+            new DialogueAction(true, null, -4, DialogueAction.InputType.CONFIRM, null),
     };
 
     final Author chatbotAuthor = new Author("chatbot", "chatbot");
@@ -70,6 +75,8 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
     DialogueType dialogueType;
     int dialogueStep;
     int moneyInputValue;
+    int inputTargetCost;
+    int inputTargetClothes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +88,13 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
             dialogueType = DialogueType.valueOf(strDialogueType);
         } catch (IllegalArgumentException | NullPointerException e) {
             // TODO: shouldn't need this here, intent should be passed to get to this activity
-            dialogueType = DialogueType.ENTER_STORE;
+            dialogueType = DialogueType.LEAVE_STORE;
         }
 
         dialogueStep = 0;
         moneyInputValue = 0;
+        inputTargetCost = 0;
+        inputTargetClothes = 0;
 
         setContentView(R.layout.activity_dialogue);
         messagesList = findViewById(R.id.messagesList);
@@ -100,6 +109,11 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
 
         dialogueDoneBtn.setOnClickListener(view -> {
             Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+            // only persist if we are actually done shopping
+            if (dialogueType == DialogueType.LEAVE_STORE) {
+                i.putExtra("money_spent", ""+inputTargetCost);
+                i.putExtra("item_bought", ""+inputTargetClothes);
+            }
             startActivity(i);
         });
 
@@ -127,15 +141,34 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
     }
 
     protected void goToNextUserDialogue() {
+        int totalCost = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.cost).sum();
+        int totalClothes = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.clothes).sum();
+        Budget budget = UsePrefs.getBudgetForCurrentMonth(getApplicationContext()).get();
+
         DialogueAction[] conversation = targetConversation;
         for (; dialogueStep < conversation.length && !conversation[dialogueStep].userAction; dialogueStep++) {
             DialogueAction da = conversation[dialogueStep];
-            adapter.addToStart(new Message(randomUUID().toString(), da.promptText, chatbotAuthor, new Date()), true);
+
+            int cost_left = budget.costBudget - totalCost;
+            int clothes_left = budget.clothesBudget - totalClothes;
+            int res_cost = cost_left - inputTargetCost;
+            int res_clothes = clothes_left - inputTargetClothes;
+
+            String fmtPromptText = da.promptText;
+
+            fmtPromptText = fmtPromptText.replaceAll("\\{\\{cost\\}\\}", ""+cost_left);
+            fmtPromptText = fmtPromptText.replaceAll("\\{\\{clothes\\}\\}", ""+clothes_left);
+            fmtPromptText = fmtPromptText.replaceAll("\\{\\{res_cost\\}\\}", ""+res_cost);
+            fmtPromptText = fmtPromptText.replaceAll("\\{\\{res_clothes\\}\\}", ""+res_clothes);
+            adapter.addToStart(new Message(randomUUID().toString(), fmtPromptText, chatbotAuthor, new Date()), true);
         }
 
         if (dialogueStep >= conversation.length) {
             // if no more user dialogue
-            adapter.addToStart(new Message(randomUUID().toString(), "View the changes in your budget", chatbotAuthor, new Date()), true);
+            String finalConvoMsg = dialogueType == DialogueType.ENTER_STORE
+                    ? "No changes were made to the budget, but you can view your progress"
+                    : "View the changes in your budget";
+            adapter.addToStart(new Message(randomUUID().toString(), finalConvoMsg, chatbotAuthor, new Date()), true);
             findViewById(R.id.money_input_layout).setVisibility(View.GONE);
             findViewById(R.id.confirm_input_layout).setVisibility(View.GONE);
             findViewById(R.id.dialogue_done_view_budget).setVisibility(View.VISIBLE);
@@ -171,6 +204,16 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
             switch (curStep.inputType) {
                 case MONEY:
                     msgText = "" + moneyInputValue;
+                    switch (curStep.inputTarget) {
+                        case COST:
+                            inputTargetCost = moneyInputValue;
+                            break;
+                        case CLOTHES:
+                            inputTargetClothes = moneyInputValue;
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case CONFIRM:
                     msgText = "" + (isNoBtn ? confirmNoBtn.getText() : confirmYesBtn.getText());
@@ -179,10 +222,6 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
 
             Message userMsg = new Message(randomUUID().toString(), msgText, userAuthor, new Date());
             adapter.addToStart(userMsg, true);
-
-            if (dialogueType == DialogueType.LEAVE_STORE) {
-                // TODO: add actual persistence logic here based on values
-            }
 
             if (isNoBtn)
                 dialogueStep += curStep.dialogueSkip;

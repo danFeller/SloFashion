@@ -6,6 +6,11 @@ public class DialogueAction {
         CONFIRM,
     }
 
+    public enum InputTarget {
+        COST,
+        CLOTHES,
+    }
+
     /**
      * Whether or not this is a user action or a chatbot action
      */
@@ -22,15 +27,20 @@ public class DialogueAction {
      * The type of input the user needs to give
      */
     public InputType inputType;
+    /**
+     * Where the input will be redirected to
+     */
+    public InputTarget inputTarget;
 
-    public DialogueAction(boolean userAction, String promptText, int dialogueSkip, InputType inputType) {
+    public DialogueAction(boolean userAction, String promptText, int dialogueSkip, InputType inputType, InputTarget inputTarget) {
         this.userAction = userAction;
         this.promptText = promptText;
         this.dialogueSkip = dialogueSkip;
         this.inputType = inputType;
+        this.inputTarget = inputTarget;
     }
 
     public static DialogueAction GenChatbotAction(String promptText) {
-        return new DialogueAction(false, promptText, 0, null);
+        return new DialogueAction(false, promptText, 0, null, null);
     }
 }
