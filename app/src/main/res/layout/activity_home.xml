@@ -10,17 +10,17 @@
         android:id="@+id/receivedMoneyBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_launchBudgetSetup" />
+        app:layout_constraintBottom_toTopOf="@+id/div_moneyBudget" />
 
     <TextView
         android:id="@+id/receivedItemBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/receivedMoneyBudget" />
+        app:layout_constraintBottom_toTopOf="@+id/div_itemBudget" />
 
 
     <Button

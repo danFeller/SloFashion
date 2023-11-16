@@ -39,7 +39,9 @@ public class MonthlyRecapActivity extends AppCompatActivity {
         TextView netMoneySpent = findViewById(R.id.netMoneySpent);
         TextView itemsPurchased = findViewById(R.id.itemsPurchased);
 
-        netMoneySpent.setText(totalSpendings + "spent");
-        itemsPurchased.setText(totalItems + "items purchased");
+        netMoneySpent.setText(totalSpendings + " Dollars Spent");
+        itemsPurchased.setText(totalItems + " Items Purchased");
     }
+
+
 }
