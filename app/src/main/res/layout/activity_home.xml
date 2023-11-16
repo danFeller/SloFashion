@@ -25,11 +25,15 @@
 
     <Button
         android:id="@+id/btn_launchManualEntry"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="+"
+        android:textSize="30dp"
         android:onClick="toManualEntry"
-        app:backgroundTint="@null" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/btn_launchBudgetSetup"
@@ -64,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginBottom="0dp"
-        android:background="@android:color/black"
+        android:background="#006400"
         app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
 
     <ImageView
@@ -80,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginBottom="0dp"
-        android:background="@android:color/black"
+        android:background="#FF0000"
         app:layout_constraintBottom_toBottomOf="parent" />
     <ImageView
         android:id="@+id/clothesImg"
