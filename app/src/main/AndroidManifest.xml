@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SloFashion"
         tools:targetApi="31">
+        <!--            android:name=".HomeActivity"-->
         <activity
-            android:name=".HomeActivity"
+            android:name=".DialogueActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +30,12 @@
         </activity>
         <activity
             android:name=".MonthlyRecapActivity">
+        </activity>
+<!--        <activity-->
+<!--            android:name=".DialogueActivity">-->
+<!--        </activity>-->
+        <activity
+            android:name=".HomeActivity">
         </activity>
     </application>
 
