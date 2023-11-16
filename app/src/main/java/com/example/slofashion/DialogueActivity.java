@@ -116,6 +116,7 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
                 i.putExtra("item_bought", ""+inputTargetClothes);
             }
             startActivity(i);
+            finish();
         });
 
         moneyInputSlider.addOnChangeListener((slider, value, fromUser) -> moneyInputValue = Math.round(value));

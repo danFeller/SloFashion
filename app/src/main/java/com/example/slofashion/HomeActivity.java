@@ -58,7 +58,6 @@ public class HomeActivity extends AppCompatActivity {
 
             // TODO: manually posting notifs for testing purposes
             // Enter notif sends in 5s, leave notif sends in 30s
-
             new Handler().postDelayed(() -> {
                 Context context = getApplicationContext();
                 Intent notifyIntent = new Intent(context, DialogueActivity.class);
@@ -68,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                 notifyIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.ENTER_STORE.toString());
                 // Create the PendingIntent.
                 PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                        context, 0, notifyIntent,
+                        context, (int) (Math.random() * 50), notifyIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 );
 
@@ -84,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                notificationManager.notify((int) Math.round(Math.random() * 50), builder.build());
+                notificationManager.notify((int) (Math.random() * 50), builder.build());
             }, 1000 * 5);
 
             new Handler().postDelayed(() -> {
@@ -96,8 +95,8 @@ public class HomeActivity extends AppCompatActivity {
                 notifyIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.LEAVE_STORE.toString());
                 // Create the PendingIntent.
                 PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                        context, 0, notifyIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                        context, (int) (Math.random() * 50), notifyIntent,
+                        PendingIntent.FLAG_IMMUTABLE
                 );
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1234");
@@ -112,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                notificationManager.notify((int) Math.round(Math.random() * 50), builder.build());
+                notificationManager.notify((int) (Math.random() * 50), builder.build());
             }, 1000 * 30);
         }
 
