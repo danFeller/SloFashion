@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginBottom="0dp"
-        android:background="@android:color/black"
+        android:background="#006400"
         app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
 
     <ImageView
@@ -84,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginBottom="0dp"
-        android:background="@android:color/black"
+        android:background="#FF0000"
         app:layout_constraintBottom_toBottomOf="parent" />
     <ImageView
         android:id="@+id/clothesImg"
