@@ -161,6 +161,11 @@ public class HomeActivity extends AppCompatActivity {
 
         receivedMoneyBudget.setText("total Spendings: "+totalSpendings);
         receivedItemBudget.setText("expenditure info: "+expenditures.get(0).toString());
+
+        // how to use helper methods
+//        int totalCost = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.cost).sum();
+//        int totalClothes = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.clothes).sum();
+//        Optional<Budget> budget = UsePrefs.getBudgetForCurrentMonth(getApplicationContext());
     }
 
     public void toMonthlyRecap(View v){
