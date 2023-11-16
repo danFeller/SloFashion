@@ -1,7 +1,15 @@
 package com.example.slofashion;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class HomeActivity extends AppCompatActivity {
     @Override
@@ -31,6 +42,79 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         //storageTestingMethod();
 
+        // Logic to setup notification channel
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence name = getString(R.string.channel_name);
+                String description = getString(R.string.channel_description);
+                int importance = NotificationManager.IMPORTANCE_HIGH;
+                NotificationChannel channel = new NotificationChannel("1234", name, importance);
+                channel.setDescription(description);
+                // Register the channel with the system. You can't change the importance
+                // or other notification behaviors after this.
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
+
+            // TODO: manually posting notifs for testing purposes
+            // Enter notif sends in 5s, leave notif sends in 30s
+
+            new Handler().postDelayed(() -> {
+                Context context = getApplicationContext();
+                Intent notifyIntent = new Intent(context, DialogueActivity.class);
+                // Set the Activity to start in a new, empty task.
+                notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                notifyIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.ENTER_STORE.toString());
+                // Create the PendingIntent.
+                PendingIntent notifyPendingIntent = PendingIntent.getActivity(
+                        context, 0, notifyIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1234");
+                builder.setContentIntent(notifyPendingIntent);
+                builder.setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentTitle("You are entering a store")
+                        .setContentText("Check up on your budget")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                notificationManager.notify((int) Math.round(Math.random() * 50), builder.build());
+            }, 1000 * 5);
+
+            new Handler().postDelayed(() -> {
+                Context context = getApplicationContext();
+                Intent notifyIntent = new Intent(context, DialogueActivity.class);
+                // Set the Activity to start in a new, empty task.
+                notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                notifyIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.LEAVE_STORE.toString());
+                // Create the PendingIntent.
+                PendingIntent notifyPendingIntent = PendingIntent.getActivity(
+                        context, 0, notifyIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1234");
+                builder.setContentIntent(notifyPendingIntent);
+                builder.setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setContentTitle("You left the store")
+                        .setContentText("Update your budget")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                notificationManager.notify((int) Math.round(Math.random() * 50), builder.build());
+            }, 1000 * 30);
+        }
 
         TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
         TextView receivedItemBudget = findViewById(R.id.receivedItemBudget);
