@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.slofashion.datamodels.UsePrefs;
 import com.example.slofashion.datamodels.entities.Budget;
+import com.google.android.material.slider.Slider;
 
 import java.util.List;
 
@@ -18,9 +19,11 @@ public class BudgetSetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budgetsetup);
+//        EditText prevMoneyBudget = findViewById(R.id.editText_prevMoneyBudget);
+//        EditText prevItemBudget = findViewById(R.id.editText_prevItemBudget);
 
-        EditText prevMoneyBudget = findViewById(R.id.editText_prevMoneyBudget);
-        EditText prevItemBudget = findViewById(R.id.editText_prevItemBudget);
+
+
 
         int moneyIntBudget = 0;
         int itemIntBudget = 0;
@@ -30,21 +33,33 @@ public class BudgetSetupActivity extends AppCompatActivity {
             itemIntBudget = budgets.get(budgets.size()-1).getClothesBudget();
         }
 
-        prevMoneyBudget.setText("Previous Monetary Budget: "+moneyIntBudget);
-        prevItemBudget.setText("Previous Item Budget: "+itemIntBudget);
+
 
     }
 
     public void toHome(View v){
-        EditText setMoneyBudget = findViewById(R.id.editText_setMoneyBudget);
-        EditText setItemBudget = findViewById(R.id.editText_setNumberBudget);
+//        EditText setMoneyBudget = findViewById(R.id.editText_setMoneyBudget);
+//        EditText setItemBudget = findViewById(R.id.editText_setNumberBudget);
+        EditText prevMoneyBudget = findViewById(R.id.editText_prevMoneyBudget);
+        EditText prevItemBudget = findViewById(R.id.editText_prevItemBudget);
 
-        String moneyBudget = setMoneyBudget.getText().toString();
-        String itemBudget = setItemBudget.getText().toString();
+//        String moneyBudget = setMoneyBudget.getText().toString();
+//        String itemBudget = setItemBudget.getText().toString();
+
+        //NEW SLIDER IMPLEMENTATION
+        Slider budgetMoney = findViewById(R.id.modifySpendingBudget);
+        Slider budgetClothes = findViewById(R.id.modifyClothesBudget);
+        float sliderValue1 = budgetMoney.getValue();
+        float sliderValue2 = budgetClothes.getValue();
+
+        prevMoneyBudget.setText("Previous Monetary Budget: "+sliderValue1);
+        prevItemBudget.setText("Previous Item Budget: "+ sliderValue2);
 
         Intent i = new Intent(this, HomeActivity.class);
-        i.putExtra("money_budget", moneyBudget);
-        i.putExtra("item_budget", itemBudget);
+//        i.putExtra("money_budget", moneyBudget);
+//        i.putExtra("item_budget", itemBudget);
+          i.putExtra("SLIDER_VALUE_1", sliderValue1);
+          i.putExtra("SLIDER_VALUE_2", sliderValue2);
 
         startActivity(i);
     }

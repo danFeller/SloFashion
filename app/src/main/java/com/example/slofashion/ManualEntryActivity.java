@@ -17,7 +17,7 @@ public class ManualEntryActivity extends AppCompatActivity {
 
     public void toHome(View v){
 
-        EditText setMoneySpent = findViewById(R.id.editText_enterMoney);
+        EditText setMoneySpent = findViewById(R.id.editText_enterNumber);
         EditText setItemBought = findViewById(R.id.editText_enterNumber);
 
         String moneySpent = setMoneySpent.getText().toString();

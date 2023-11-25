@@ -4,94 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    android:background="#7dd3fc">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="108dp"
+        android:text="Budget Remaining"
+        android:textAlignment="center"
+        android:textSize="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/receivedMoneyBudget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/receivedMoneyBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="111dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="111dp"
+        android:text="$150"
+        android:textSize="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/div_moneyBudget" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/receivedItemBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/div_itemBudget" />
-
-
-    <Button
-        android:id="@+id/btn_launchManualEntry"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="+"
-        android:textSize="30dp"
-        android:onClick="toManualEntry"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <Button
-        android:id="@+id/btn_launchBudgetSetup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:onClick="toModifyBudget"
-        android:text="Modify Budget"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_launchMonthlyRecap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Monthly Recap"
-        android:onClick="toMonthlyRecap"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="164dp"
+        android:text="Items Bought"
+        android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receivedMoneyBudget"
+        android:textColor="@color/black"/>
 
-    <View
-        android:id="@+id/div_middle"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@android:color/holo_blue_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_launchBudgetSetup" />
-
-    <View
-        android:id="@+id/div_moneyBudget"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginBottom="0dp"
-        android:background="#006400"
-        app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
-
-    <ImageView
-        android:id="@+id/moneyImg"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/pile_money"
-        app:layout_constraintBottom_toTopOf="@+id/div_middle"/>
-
-    <View
-        android:id="@+id/div_itemBudget"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginBottom="0dp"
-        android:background="#FF0000"
-        app:layout_constraintBottom_toBottomOf="parent" />
     <ImageView
         android:id="@+id/clothesImg"
+        android:layout_width="303dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/clothes_pile_v2"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        app:itemIconTint="#FFFFFF"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/pile_clothes"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconSize="48dp"
+        app:itemActiveIndicatorStyle="@color/transparent"
+        android:background="#22c55e" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
