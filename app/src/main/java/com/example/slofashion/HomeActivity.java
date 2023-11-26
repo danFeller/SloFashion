@@ -43,7 +43,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends AppCompatActivity{
-
     ActivityHomeBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +50,6 @@ public class HomeActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home);
 
         //storageTestingMethod();
-
-        //DANY"S MENU OVERHAUL
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.add);
-
-        bottomNavigationView.setOnItemSelectedListener(item ->{
-            int itemId = item.getItemId();
-            if (itemId == R.id.add) {
-                startActivity(new Intent(this, ManualEntryActivity.class));
-                return true;
-            } else if (itemId == R.id.recap) {
-                startActivity(new Intent(this, MonthlyRecapActivity.class));
-                return true;
-            } else if (itemId == R.id.budget) {
-                startActivity(new Intent(this, BudgetSetupActivity.class));
-                return true;
-            }
-            return false;
-        });
-
 
         // Logic to setup notification channel
         {
@@ -172,8 +151,33 @@ public class HomeActivity extends AppCompatActivity{
         String itemBought = i.getStringExtra("item_bought");
 
         float sliderValue1 = i.getFloatExtra("SLIDER_VALUE_1", 1.0f);
-        float sliderValue2 = i.getFloatExtra("SLIDER_VALUE_2", 1.0f);
-        int clothingCount = 0;
+        float sliderValue2 = i.getFloatExtra("SLIDER_VALUE_2", 0f);
+
+        //DANY"S MENU OVERHAUL
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.add);
+
+        bottomNavigationView.setOnItemSelectedListener(item ->{
+            int itemId = item.getItemId();
+            if (itemId == R.id.add) {
+                Intent manualIntent = new Intent(this, ManualEntryActivity.class);
+                manualIntent.putExtra("SLIDER_VALUE_2", sliderValue2);
+                manualIntent.putExtra("SLIDER_VALUE_1", sliderValue1);
+                startActivity(manualIntent);
+                return true;
+            } else if (itemId == R.id.recap) {
+                Intent recapIntent = new Intent(this, MonthlyRecapActivity.class);
+                startActivity(recapIntent);
+                return true;
+            } else if (itemId == R.id.budget) {
+                Intent budgetIntent = new Intent(this, BudgetSetupActivity.class);
+                startActivity(budgetIntent);
+                return true;
+            }
+            return false;
+        });
+
+
 
         if(i != null){
 //            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
@@ -191,8 +195,10 @@ public class HomeActivity extends AppCompatActivity{
 //            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
 //            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            receivedMoneyBudget.setText("$"+(float)((int)(sliderValue1*100)) / 100);
-            receivedItemBudget.setText("Items Bought: " + clothingCount);
+            float budget = i.getFloatExtra("SLIDER_VALUE_1", 0);
+            float clothes = i.getFloatExtra("SLIDER_VALUE_2", 0);
+            receivedMoneyBudget.setText("$"+(float)((int)(budget*100)) / 100);
+            receivedItemBudget.setText("Items Bought: " + (int)clothes);
 
         }
         else{
