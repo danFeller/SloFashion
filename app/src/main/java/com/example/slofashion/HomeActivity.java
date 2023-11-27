@@ -10,13 +10,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.slofashion.databinding.ActivityHomeBinding;
 import com.example.slofashion.datamodels.entities.Budget;
 import com.example.slofashion.datamodels.entities.Expenditure;
 import com.example.slofashion.datamodels.UsePrefs;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
@@ -34,12 +38,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity{
+    ActivityHomeBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         //storageTestingMethod();
 
         // Logic to setup notification channel
@@ -115,45 +124,81 @@ public class HomeActivity extends AppCompatActivity {
             }, 1000 * 30);
         }
 
+
+
+
+        //HOME SCREEN LOGIC
         TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
         TextView receivedItemBudget = findViewById(R.id.receivedItemBudget);
-        View div_moneyBudget = findViewById(R.id.div_moneyBudget);
-        View div_itemBudget = findViewById(R.id.div_itemBudget);
-        ImageView moneyImg = findViewById(R.id.moneyImg);
+//        View div_moneyBudget = findViewById(R.id.div_moneyBudget);
+//        View div_itemBudget = findViewById(R.id.div_itemBudget);
+//        ImageView moneyImg = findViewById(R.id.moneyImg);
         ImageView clothesImg = findViewById(R.id.clothesImg);
 
 
-        ViewGroup.MarginLayoutParams moneyBudget_layoutParams = (ViewGroup.MarginLayoutParams) div_moneyBudget.getLayoutParams();
-        ViewGroup.MarginLayoutParams itemBudget_layoutParams = (ViewGroup.MarginLayoutParams) div_itemBudget.getLayoutParams();
-        ViewGroup.LayoutParams moneyImg_layoutParams = moneyImg.getLayoutParams();
+//        ViewGroup.MarginLayoutParams moneyBudget_layoutParams = (ViewGroup.MarginLayoutParams) div_moneyBudget.getLayoutParams();
+//        ViewGroup.MarginLayoutParams itemBudget_layoutParams = (ViewGroup.MarginLayoutParams) div_itemBudget.getLayoutParams();
+//        ViewGroup.LayoutParams moneyImg_layoutParams = moneyImg.getLayoutParams();
         ViewGroup.LayoutParams clothesImg_layoutParams = clothesImg.getLayoutParams();
 
 
+
+        //NEW SLIDER IMPLEMENTATION
         Intent i = getIntent();
         String moneyBudget = i.getStringExtra("money_budget");
         String itemBudget = i.getStringExtra("item_budget");
         String moneySpent = i.getStringExtra("money_spent");
         String itemBought = i.getStringExtra("item_bought");
 
+        float sliderValue1 = i.getFloatExtra("SLIDER_VALUE_1", 1.0f);
+        float sliderValue2 = i.getFloatExtra("SLIDER_VALUE_2", 0f);
 
-        if(moneyBudget != null && itemBudget != null){
-            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
-            budgets.add(new Budget(
-                    (int)Float.parseFloat(moneyBudget),
-                    (int)Float.parseFloat(itemBudget)
-            ));
-            UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
+        //DANY"S MENU OVERHAUL
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.add);
+
+        bottomNavigationView.setOnItemSelectedListener(item ->{
+            int itemId = item.getItemId();
+            if (itemId == R.id.add) {
+                Intent manualIntent = new Intent(this, ManualEntryActivity.class);
+                manualIntent.putExtra("SLIDER_VALUE_2", sliderValue2);
+                manualIntent.putExtra("SLIDER_VALUE_1", sliderValue1);
+                startActivity(manualIntent);
+                return true;
+            } else if (itemId == R.id.recap) {
+                Intent recapIntent = new Intent(this, MonthlyRecapActivity.class);
+                startActivity(recapIntent);
+                return true;
+            } else if (itemId == R.id.budget) {
+                Intent budgetIntent = new Intent(this, BudgetSetupActivity.class);
+                startActivity(budgetIntent);
+                return true;
+            }
+            return false;
+        });
 
 
-            int moneyIntBudget = budgets.get(budgets.size()-1).getCostBudget();
-            int itemIntBudget = budgets.get(budgets.size()-1).getClothesBudget();
+
+        if(i != null){
+//            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
+//            budgets.add(new Budget(
+//                    (int)Float.parseFloat(moneyBudget),
+//                    (int)Float.parseFloat(itemBudget)
+//            ));
+//            UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
+//
+//
+//            int moneyIntBudget = budgets.get(budgets.size()-1).getCostBudget();
+//            int itemIntBudget = budgets.get(budgets.size()-1).getClothesBudget();
 
 
-            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
-            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
+//            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
+//            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            receivedMoneyBudget.setText("Monetary Budget: "+moneyIntBudget);
-            receivedItemBudget.setText("Item Budget: "+itemIntBudget);
+            float budget = i.getFloatExtra("SLIDER_VALUE_1", 0);
+            float clothes = i.getFloatExtra("SLIDER_VALUE_2", 0);
+            receivedMoneyBudget.setText("$"+(float)((int)(budget*100)) / 100);
+            receivedItemBudget.setText("Items Bought: " + (int)clothes);
 
         }
         else{
@@ -165,11 +210,11 @@ public class HomeActivity extends AppCompatActivity {
                  itemIntBudget = budgets.get(budgets.size()-1).getClothesBudget();
             }
 
-            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
-            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
+//            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
+//            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            receivedMoneyBudget.setText("Monetary Budget: "+moneyIntBudget);
-            receivedItemBudget.setText("Item Budget: "+itemIntBudget);
+            receivedMoneyBudget.setText("$"+moneyIntBudget);
+            receivedItemBudget.setText("Items Bought: "+itemIntBudget);
         }
         if(moneySpent != null && itemBought != null){
 
@@ -188,7 +233,7 @@ public class HomeActivity extends AppCompatActivity {
                 totalItems += expenditures.get(index).getClothes();
             }
 
-            moneyImg_layoutParams.height = totalSpendings*4;
+//            moneyImg_layoutParams.height = totalSpendings*4;
             clothesImg_layoutParams.height = totalItems*35;
 
             //receivedMoneyBudget.setText("money spent: "+totalSpendings);
@@ -209,7 +254,7 @@ public class HomeActivity extends AppCompatActivity {
             //receivedMoneyBudget.setText("total spendings: "+totalSpendings);
             //receivedItemBudget.setText("total items: "+totalItems);
 
-            moneyImg_layoutParams.height = totalSpendings;
+//            moneyImg_layoutParams.height = totalSpendings;
             clothesImg_layoutParams.height = totalItems;
 
         }
@@ -251,20 +296,19 @@ public class HomeActivity extends AppCompatActivity {
 //        Optional<Budget> budget = UsePrefs.getBudgetForCurrentMonth(getApplicationContext());
     }
 
-    public void toMonthlyRecap(View v){
-        Intent i = new Intent(this, MonthlyRecapActivity.class);
-        startActivity(i);
-    }
-
-    public void toModifyBudget(View v){
-        Intent i = new Intent(this, BudgetSetupActivity.class);
-        startActivity(i);
-    }
-
-    public void toManualEntry(View v){
-        Intent i = new Intent(this, ManualEntryActivity.class);
-        startActivity(i);
-    }
+//    public void toMonthlyRecap(View v){
+//        Intent i = new Intent(this, MonthlyRecapActivity.class);
+//        startActivity(i);
+//    }
+//
+//    public void toModifyBudget(View v){
+//        Intent i = new Intent(this, BudgetSetupActivity.class);
+//        startActivity(i);
+//    }
+//
+//    public void toManualEntry(View v){
+//        Intent i = new Intent(this, ManualEntryActivity.class);
+//        startActivity(i);
+//    }
 
 }
-

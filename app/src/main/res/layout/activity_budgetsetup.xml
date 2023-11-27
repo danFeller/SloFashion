@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -18,13 +18,13 @@
             android:id="@+id/editText_prevMoneyBudget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/editText_prevItemBudget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/textView_setBudget"
@@ -36,29 +36,83 @@
             android:text="What is your monthly budget?"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
-        <EditText
-            android:id="@+id/editText_setMoneyBudget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:backgroundTint="@android:color/darker_gray"
-            android:ems="10"
-            android:hint="Enter Monetary Budget"
-            android:inputType="numberDecimal"
-            android:textIsSelectable="false"
-            android:textSize="20sp"
-            android:textStyle="normal" />
+<!--        <EditText-->
+<!--            android:id="@+id/editText_setMoneyBudget"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:backgroundTint="@android:color/darker_gray"-->
+<!--            android:ems="10"-->
+<!--            android:hint="Enter Monetary Budget"-->
+<!--            android:inputType="numberDecimal"-->
+<!--            android:textIsSelectable="false"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="normal" />-->
 
-        <EditText
-            android:id="@+id/editText_setNumberBudget"
-            android:layout_width="wrap_content"
+<!--        <EditText-->
+<!--            android:id="@+id/editText_setNumberBudget"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:ems="10"-->
+<!--            android:hint="Enter Item Budget"-->
+<!--            android:inputType="number"-->
+<!--            android:textSize="20sp" />-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Enter Item Budget"
-            android:textSize="20sp" />
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_monetization_on_24"
+                app:tint="@color/black" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/modifySpendingBudget"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:valueFrom="0.0"
+                android:valueTo="300.0"
+                android:stepSize="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_shopping_bag_24"
+                app:tint="@color/black" />
+            <com.google.android.material.slider.Slider
+                android:id="@+id/modifyClothesBudget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:valueFrom="0"
+                android:valueTo="25"
+                android:stepSize="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+
 
         <Button
             android:id="@+id/button_setUp_submit"
@@ -69,7 +123,6 @@
             android:onClick="toHome"
             android:text="Submit"
             android:textSize="20sp" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

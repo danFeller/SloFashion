@@ -25,6 +25,13 @@ android {
             )
         }
     }
+
+    //I NEED THIS TO GET THE BOTTOM NAV TO WORK
+    buildFeatures{
+        viewBinding = true
+    }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
