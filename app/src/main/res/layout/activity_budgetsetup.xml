@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BudgetSetupActivity">
+    tools:context=".BudgetSetupActivity"
+    android:background="#cbd5e1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,8 @@
             android:layout_margin="20dp"
             android:gravity="center_horizontal"
             android:text="What is your monthly budget?"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textColor="@color/black"/>
 
 
         <LinearLayout

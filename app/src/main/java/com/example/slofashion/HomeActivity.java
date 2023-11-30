@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.Image;
 import android.os.Build;
@@ -197,6 +198,7 @@ public class HomeActivity extends AppCompatActivity{
 
 
             receivedMoneyBudget.setText("$"+(float)((int)(sliderValue1*100)) / 100);
+
             receivedItemBudget.setText("Items Bought: " + (int)sliderValue2);
             params.height = ((int)sliderValue2 * 100) + 10;
             clothesPile.setLayoutParams(params);

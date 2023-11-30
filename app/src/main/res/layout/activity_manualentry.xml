@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManualEntryActivity">
+    tools:context=".ManualEntryActivity"
+    android:background="#cbd5e1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,8 @@
             android:layout_margin="20dp"
             android:gravity="center_horizontal"
             android:text="Enter Money Spent and Clothes Bought"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/black"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
