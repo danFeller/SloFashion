@@ -2,8 +2,11 @@ package com.example.slofashion;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,8 +43,8 @@ public class BudgetSetupActivity extends AppCompatActivity {
     public void toHome(View v){
 //        EditText setMoneyBudget = findViewById(R.id.editText_setMoneyBudget);
 //        EditText setItemBudget = findViewById(R.id.editText_setNumberBudget);
-        EditText prevMoneyBudget = findViewById(R.id.editText_prevMoneyBudget);
-        EditText prevItemBudget = findViewById(R.id.editText_prevItemBudget);
+//        EditText prevMoneyBudget = findViewById(R.id.editText_prevMoneyBudget);
+//        EditText prevItemBudget = findViewById(R.id.editText_prevItemBudget);
 
 //        String moneyBudget = setMoneyBudget.getText().toString();
 //        String itemBudget = setItemBudget.getText().toString();
@@ -52,14 +55,17 @@ public class BudgetSetupActivity extends AppCompatActivity {
         float sliderValue1 = budgetMoney.getValue();
         float sliderValue2 = budgetClothes.getValue();
 
-        prevMoneyBudget.setText("Previous Monetary Budget: "+sliderValue1);
-        prevItemBudget.setText("Previous Item Budget: "+ sliderValue2);
+//        prevMoneyBudget.setText("Previous Monetary Budget: "+sliderValue1);
+//        prevItemBudget.setText("Previous Item Budget: "+ sliderValue2);
 
         Intent i = new Intent(this, HomeActivity.class);
 //        i.putExtra("money_budget", moneyBudget);
 //        i.putExtra("item_budget", itemBudget);
           i.putExtra("SLIDER_VALUE_1", sliderValue1);
-          i.putExtra("SLIDER_VALUE_2", sliderValue2);
+          i.putExtra("SLIDER_VALUE_2", 0);
+          i.putExtra("RESET", sliderValue2);
+
+
 
         startActivity(i);
     }

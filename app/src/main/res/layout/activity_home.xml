@@ -55,9 +55,9 @@
 
     <ImageView
         android:id="@+id/clothesImg"
-        android:layout_width="303dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="54dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="0dp"
         android:layout_marginEnd="54dp"
         android:layout_marginBottom="4dp"
         android:src="@drawable/clothes_pile_v2"
