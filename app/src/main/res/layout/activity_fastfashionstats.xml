@@ -7,13 +7,25 @@
     tools:context=".FastFashionStatsActivity">
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Source: https://remake.world/2022-remake-fashion-accountability-report/"
         android:gravity="center"
+        android:text="Source: https://remake.world/2022-remake-fashion-accountability-report/"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:text="Fast Fashion Scoring Diagram"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView3" />
 
     <ImageView
         android:id="@+id/img_fastFashion"
@@ -26,7 +38,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:layout_editor_absoluteX="0dp">
 
         <Button
             android:id="@+id/button_page1_home"
@@ -47,7 +61,6 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
-
 
 
     <!-- <TextView
