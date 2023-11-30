@@ -167,6 +167,16 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
 
         if (dialogueStep >= conversation.length) {
             // if no more user dialogue
+            float COST_CLOTHING_DENSITY_THRESHOLD = 5;
+            float ccDensity = ((float) inputTargetCost) / inputTargetClothes;
+
+            // too many clothes with small price, show econ facts
+            if (ccDensity <= COST_CLOTHING_DENSITY_THRESHOLD){
+                String fastFashionMsg = "You will have spent $" + (Math.round(ccDensity * 100) / 100) + " per clothing item. Check the resources below about the environmental impacts of purchasing clothes at this price point with the (i) button.";
+                adapter.addToStart(new Message(randomUUID().toString(), fastFashionMsg, chatbotAuthor, new Date()), true);
+                findViewById(R.id.button_fast_fashion_stats_dialogue).setVisibility(View.VISIBLE);
+            }
+
             String finalConvoMsg = dialogueType == DialogueType.ENTER_STORE
                     ? "No changes were made to the budget, but you can view your progress"
                     : "View the changes in your budget";
@@ -231,5 +241,11 @@ public class DialogueActivity extends AppCompatActivity implements View.OnClickL
         }
 
         goToNextUserDialogue();
+    }
+
+    public void toStats(View v) {
+        // Button submitButton = findViewById(R.id.button_fast_fashion_stats);
+        Intent i = new Intent(this, FastFashionStatsActivity.class);
+        startActivity(i);
     }
 }
