@@ -19,7 +19,7 @@
         android:id="@+id/img_fastFashion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/fast_fashion"
+        android:src="@drawable/fast_fashion_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -29,21 +29,21 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/button_page1_home"
+            android:id="@+id/button_page4_prev"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:onClick="prevPage"
+            android:text="Prev"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/button_page4_home"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:onClick="toHome"
             android:text="Home"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <Button
-            android:id="@+id/button_page1_next"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:onClick="nextPage"
-            android:text="Next"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>

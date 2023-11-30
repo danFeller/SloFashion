@@ -34,6 +34,15 @@
             android:name=".FastFashionStatsActivity">
         </activity>
         <activity
+            android:name=".FastFashionPageTwoActivity">
+        </activity>
+        <activity
+            android:name=".FastFashionPageThreeActivity">
+        </activity>
+        <activity
+            android:name=".FastFashionPageFourActivity">
+        </activity>
+        <activity
             android:name=".DialogueActivity">
         </activity>
 
