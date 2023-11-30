@@ -116,18 +116,21 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item ->{
             int itemId = item.getItemId();
             if (itemId == R.id.add) {
-                Intent manualIntent = new Intent(this, ManualEntryActivity.class);
-                manualIntent.putExtra("SLIDER_VALUE_2", sliderValue2);
-                manualIntent.putExtra("SLIDER_VALUE_1", sliderValue1);
-                startActivity(manualIntent);
+                Intent dialogueIntent = new Intent(this, DialogueActivity.class);
+                dialogueIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                dialogueIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.LEAVE_STORE.toString());
+                startActivity(dialogueIntent);
+                finish();
                 return true;
             } else if (itemId == R.id.recap) {
                 Intent recapIntent = new Intent(this, MonthlyRecapActivity.class);
                 startActivity(recapIntent);
+                finish();
                 return true;
             } else if (itemId == R.id.budget) {
                 Intent budgetIntent = new Intent(this, BudgetSetupActivity.class);
                 startActivity(budgetIntent);
+                finish();
                 return true;
             }
             return false;
