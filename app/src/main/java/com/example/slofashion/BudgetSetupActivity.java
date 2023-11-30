@@ -90,23 +90,22 @@ public class BudgetSetupActivity extends AppCompatActivity {
 //        String itemBudget = setItemBudget.getText().toString();
 
         //NEW SLIDER IMPLEMENTATION
-        budgetMoney = findViewById(R.id.modifySpendingBudget);
-        budgetClothes = findViewById(R.id.modifyClothesBudget);
-        sliderValue1 = budgetMoney.getValue();
-        sliderValue2 = budgetClothes.getValue();
+//        budgetMoney = findViewById(R.id.modifySpendingBudget);
+//        budgetClothes = findViewById(R.id.modifyClothesBudget);
+//        sliderValue1 = budgetMoney.getValue();
+//        sliderValue2 = budgetClothes.getValue();
 
 //        prevMoneyBudget.setText("Previous Monetary Budget: "+sliderValue1);
 //        prevItemBudget.setText("Previous Item Budget: "+ sliderValue2);
 
         Intent i = new Intent(this, HomeActivity.class);
-//        i.putExtra("money_budget", moneyBudget);
-//        i.putExtra("item_budget", itemBudget);
-          i.putExtra("SLIDER_VALUE_1", sliderValue1);
-          i.putExtra("SLIDER_VALUE_2", 0);
-          i.putExtra("RESET", sliderValue2);
+        i.putExtra("money_budget", "" + sliderValue1);
+        i.putExtra("item_budget", "" + sliderValue2);
+
 
 
 
         startActivity(i);
+        finish();
     }
 }
