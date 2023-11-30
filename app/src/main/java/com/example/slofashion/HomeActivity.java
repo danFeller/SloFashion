@@ -82,6 +82,16 @@ public class HomeActivity extends AppCompatActivity {
                         .addOnSuccessListener(unused -> Log.i("GeofenceSetup", "geofences added"))
                         .addOnFailureListener(err -> Log.e("GeofenceSetup", "error with adding geofences"));
             }
+
+            // TODO: manually posting notifs for testing purposes
+            // Enter notif sends in 5s, leave notif sends in 30s
+            new Handler().postDelayed(() -> {
+                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.ENTER_STORE);
+            }, 1000 * 5);
+
+            new Handler().postDelayed(() -> {
+                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.LEAVE_STORE);
+            }, 1000 * 30);
         }
 
         //HOME SCREEN LOGIC

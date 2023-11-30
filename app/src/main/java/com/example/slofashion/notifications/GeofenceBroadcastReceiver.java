@@ -100,7 +100,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
     }
 
     // https://developer.android.com/develop/sensors-and-location/location/geofencing
-    private void sendNotification(@NotNull Context context, @NotNull DialogueActivity.DialogueType dialogueType) {
+    public static void sendNotification(@NotNull Context context, @NotNull DialogueActivity.DialogueType dialogueType) {
         Intent notifyIntent = new Intent(context, DialogueActivity.class);
         // Set the Activity to start in a new, empty task.
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
