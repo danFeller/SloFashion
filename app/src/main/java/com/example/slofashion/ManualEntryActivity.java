@@ -83,13 +83,13 @@ public class ManualEntryActivity extends AppCompatActivity {
         float sliderValue1 = addMoney.getValue();
         float sliderValue2 = addClothes.getValue();
 
-        float update = remainingBudget - sliderValue1;
-        float update2 = clothingAmount + (int)sliderValue2;
+        float update = sliderValue1;
+        float update2 = sliderValue2;
 
         Intent i = new Intent(this, HomeActivity.class);
 
-        i.putExtra("SLIDER_VALUE_1", update);
-        i.putExtra("SLIDER_VALUE_2", update2);
+        i.putExtra("money_spent", "" + update);
+        i.putExtra("item_bought", "" + update2);
         startActivity(i);
     }
 

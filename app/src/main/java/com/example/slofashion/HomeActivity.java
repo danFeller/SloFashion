@@ -32,6 +32,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -159,13 +160,13 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        if(i != null){
-//            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
-//            budgets.add(new Budget(
-//                    (int)Float.parseFloat(moneyBudget),
-//                    (int)Float.parseFloat(itemBudget)
-//            ));
-//            UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
+        if(i != null && moneyBudget != null && itemBudget != null){
+            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
+            budgets.add(new Budget(
+                    (int)Float.parseFloat(moneyBudget),
+                    (int)Float.parseFloat(itemBudget)
+            ));
+            UsePrefs.saveAllBudgets(getApplicationContext(), budgets);
 //
 //
 //            int moneyIntBudget = budgets.get(budgets.size()-1).getCostBudget();
@@ -175,17 +176,6 @@ public class HomeActivity extends AppCompatActivity {
 //            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
 //            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-
-            receivedMoneyBudget.setText("$"+(float)((int)(sliderValue1*100)) / 100);
-
-            receivedItemBudget.setText("Items Bought: " + (int)sliderValue2);
-            params.height = ((int)sliderValue2 * 100) + 10;
-            clothesPile.setLayoutParams(params);
-            Log.d("myTag", String.valueOf(params.height));
-            if(params.height > 1000) {
-                params.height = 1000;
-                clothesPile.setLayoutParams(params);
-            }
         }
         else{
             int moneyIntBudget = 0;
@@ -244,7 +234,28 @@ public class HomeActivity extends AppCompatActivity {
 //            clothesImg_layoutParams.height = totalItems;
 
         }
+//        Budget budget;
+//        try{
+//            budget = UsePrefs.getBudgetForCurrentMonth(getApplicationContext()).get();
+//        } catch(NoSuchElementException e){
+//            Intent budgetIntent = new Intent(this, BudgetSetupActivity.class);
+//            startActivity(budgetIntent);
+//            finish();
+//            return;
+//        }
 
+        Budget budget = UsePrefs.getBudgetForCurrentMonth(getApplicationContext()).orElse(new Budget(120, 10));
+
+        int totalCost = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.cost).sum();
+        int totalClothes = UsePrefs.getAllExpendituresForCurrentMonth(getApplicationContext()).stream().mapToInt(e -> e.clothes).sum();
+        receivedMoneyBudget.setText("$" + (budget.costBudget - totalCost));
+        receivedItemBudget.setText("Items Bought: " + totalClothes);
+        params.height =(int)(((float)totalClothes / budget.clothesBudget) * 800);
+
+
+        params.height = Math.max(Math.min(params.height, 1000), 100);
+        Log.d("myTag", String.valueOf(params.height));
+        clothesPile.setLayoutParams(params);
         //storageTestingMethod();
 
         }
