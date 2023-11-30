@@ -36,10 +36,12 @@
         <activity
             android:name=".DialogueActivity">
         </activity>
+
+        <receiver android:name=".notifications.GeofenceBroadcastReceiver"/>
     </application>
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
-<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 </manifest>
