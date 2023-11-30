@@ -13,19 +13,7 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-<!--        <EditText-->
-<!--            android:id="@+id/editText_prevMoneyBudget"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/editText_prevItemBudget"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center" />-->
-
+      
         <TextView
             android:id="@+id/textView_setBudget"
             android:layout_width="wrap_content"
@@ -35,30 +23,6 @@
             android:gravity="center_horizontal"
             android:text="What is your monthly budget?"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
-
-<!--        <EditText-->
-<!--            android:id="@+id/editText_setMoneyBudget"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:backgroundTint="@android:color/darker_gray"-->
-<!--            android:ems="10"-->
-<!--            android:hint="Enter Monetary Budget"-->
-<!--            android:inputType="numberDecimal"-->
-<!--            android:textIsSelectable="false"-->
-<!--            android:textSize="20sp"-->
-<!--            android:textStyle="normal" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/editText_setNumberBudget"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:ems="10"-->
-<!--            android:hint="Enter Item Budget"-->
-<!--            android:inputType="number"-->
-<!--            android:textSize="20sp" />-->
 
 
         <LinearLayout
