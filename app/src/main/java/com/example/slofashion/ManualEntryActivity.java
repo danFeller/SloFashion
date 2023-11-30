@@ -92,4 +92,10 @@ public class ManualEntryActivity extends AppCompatActivity {
         i.putExtra("SLIDER_VALUE_2", update2);
         startActivity(i);
     }
+
+    public void toStats(View v) {
+        // Button submitButton = findViewById(R.id.button_fast_fashion_stats);
+        Intent i = new Intent(this, FastFashionStatsActivity.class);
+        startActivity(i);
+    }
 }
