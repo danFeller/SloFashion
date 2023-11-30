@@ -51,7 +51,19 @@ public class HomeActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        final String PREFS_NAME = "MyPrefsFile";
 
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        if (settings.getBoolean("my_first_time", true)) {
+            //the app is being launched for first time, do something
+            Log.d("Comments", "First time");
+            Intent budgetIntent = new Intent(this, BudgetSetupActivity.class);
+            startActivity(budgetIntent);
+
+            // record the fact that the app has been started at least once
+            settings.edit().putBoolean("my_first_time", false).commit();
+        }
         //storageTestingMethod();
 
         // Logic to setup notification channel
