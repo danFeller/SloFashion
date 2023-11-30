@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -98,8 +101,11 @@ public class BudgetSetupActivity extends AppCompatActivity {
         Intent i = new Intent(this, HomeActivity.class);
 //        i.putExtra("money_budget", moneyBudget);
 //        i.putExtra("item_budget", itemBudget);
-        i.putExtra("SLIDER_VALUE_1", sliderValue1);
-        i.putExtra("SLIDER_VALUE_2", sliderValue2);
+          i.putExtra("SLIDER_VALUE_1", sliderValue1);
+          i.putExtra("SLIDER_VALUE_2", 0);
+          i.putExtra("RESET", sliderValue2);
+
+
 
         startActivity(i);
     }

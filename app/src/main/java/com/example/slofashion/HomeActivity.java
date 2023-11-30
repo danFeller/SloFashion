@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Matrix;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
@@ -133,15 +135,11 @@ public class HomeActivity extends AppCompatActivity{
 //        View div_moneyBudget = findViewById(R.id.div_moneyBudget);
 //        View div_itemBudget = findViewById(R.id.div_itemBudget);
 //        ImageView moneyImg = findViewById(R.id.moneyImg);
-        ImageView clothesImg = findViewById(R.id.clothesImg);
 
 
 //        ViewGroup.MarginLayoutParams moneyBudget_layoutParams = (ViewGroup.MarginLayoutParams) div_moneyBudget.getLayoutParams();
 //        ViewGroup.MarginLayoutParams itemBudget_layoutParams = (ViewGroup.MarginLayoutParams) div_itemBudget.getLayoutParams();
 //        ViewGroup.LayoutParams moneyImg_layoutParams = moneyImg.getLayoutParams();
-        ViewGroup.LayoutParams clothesImg_layoutParams = clothesImg.getLayoutParams();
-
-
 
         //NEW SLIDER IMPLEMENTATION
         Intent i = getIntent();
@@ -150,10 +148,13 @@ public class HomeActivity extends AppCompatActivity{
         String moneySpent = i.getStringExtra("money_spent");
         String itemBought = i.getStringExtra("item_bought");
 
-        float sliderValue1 = i.getFloatExtra("SLIDER_VALUE_1", 1.0f);
+        float sliderValue1 = i.getFloatExtra("SLIDER_VALUE_1", 0f);
         float sliderValue2 = i.getFloatExtra("SLIDER_VALUE_2", 0f);
 
-        //DANY"S MENU OVERHAUL
+        ImageView clothesPile = findViewById(R.id.clothesImg);
+        ViewGroup.LayoutParams params = clothesPile.getLayoutParams();
+
+        //DANNY"S MENU OVERHAUL
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.add);
 
@@ -178,7 +179,6 @@ public class HomeActivity extends AppCompatActivity{
         });
 
 
-
         if(i != null){
 //            List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
 //            budgets.add(new Budget(
@@ -195,11 +195,16 @@ public class HomeActivity extends AppCompatActivity{
 //            moneyBudget_layoutParams.setMargins(0, 0, 0, moneyIntBudget*4);
 //            itemBudget_layoutParams.setMargins(0,0 , 0, itemIntBudget*35);
 
-            float budget = i.getFloatExtra("SLIDER_VALUE_1", 0);
-            float clothes = i.getFloatExtra("SLIDER_VALUE_2", 0);
-            receivedMoneyBudget.setText("$"+(float)((int)(budget*100)) / 100);
-            receivedItemBudget.setText("Items Bought: " + (int)clothes);
 
+            receivedMoneyBudget.setText("$"+(float)((int)(sliderValue1*100)) / 100);
+            receivedItemBudget.setText("Items Bought: " + (int)sliderValue2);
+            params.height = ((int)sliderValue2 * 100) + 10;
+            clothesPile.setLayoutParams(params);
+            Log.d("myTag", String.valueOf(params.height));
+            if(params.height > 1000) {
+                params.height = 1000;
+                clothesPile.setLayoutParams(params);
+            }
         }
         else{
             int moneyIntBudget = 0;
@@ -234,7 +239,7 @@ public class HomeActivity extends AppCompatActivity{
             }
 
 //            moneyImg_layoutParams.height = totalSpendings*4;
-            clothesImg_layoutParams.height = totalItems*35;
+//            clothesImg_layoutParams.height = totalItems*35;
 
             //receivedMoneyBudget.setText("money spent: "+totalSpendings);
             //receivedItemBudget.setText("item bought: "+totalItems);
@@ -255,7 +260,7 @@ public class HomeActivity extends AppCompatActivity{
             //receivedItemBudget.setText("total items: "+totalItems);
 
 //            moneyImg_layoutParams.height = totalSpendings;
-            clothesImg_layoutParams.height = totalItems;
+//            clothesImg_layoutParams.height = totalItems;
 
         }
 
