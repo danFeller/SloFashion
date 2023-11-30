@@ -7,43 +7,38 @@
     tools:context=".FastFashionStatsActivity">
 
     <TextView
-        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="Source: https://remake.world/2022-remake-fashion-accountability-report/"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:gravity="center"
-        android:text="Fast Fashion Scoring Diagram"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView3" />
 
     <ImageView
         android:id="@+id/img_fastFashion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/fast_fashion"
+        android:src="@drawable/fast_fashion_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:layout_editor_absoluteX="0dp">
+        android:gravity="center">
 
         <Button
-            android:id="@+id/button_page1_home"
+            android:id="@+id/button_page2_prev"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:onClick="prevPage"
+            android:text="Prev"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/button_page2_home"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -52,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <Button
-            android:id="@+id/button_page1_next"
+            android:id="@+id/button_page2_next"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -61,6 +56,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
+
 
 
     <!-- <TextView

@@ -93,9 +93,5 @@ public class ManualEntryActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void toStats(View v) {
-        // Button submitButton = findViewById(R.id.button_fast_fashion_stats);
-        Intent i = new Intent(this, FastFashionStatsActivity.class);
-        startActivity(i);
-    }
+
 }

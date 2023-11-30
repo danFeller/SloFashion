@@ -1,5 +1,7 @@
 package com.example.slofashion;
 
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,6 +24,10 @@ import com.example.slofashion.databinding.ActivityHomeBinding;
 import com.example.slofashion.datamodels.entities.Budget;
 import com.example.slofashion.datamodels.entities.Expenditure;
 import com.example.slofashion.datamodels.UsePrefs;
+import com.example.slofashion.notifications.GeofenceBroadcastReceiver;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -46,8 +52,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class HomeActivity extends AppCompatActivity{
+public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
+    private PendingIntent geofencePendingIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,67 +89,23 @@ public class HomeActivity extends AppCompatActivity{
                 notificationManager.createNotificationChannel(channel);
             }
 
+            GeofencingClient geofencingClient = LocationServices.getGeofencingClient(this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+                        .addOnSuccessListener(unused -> Log.i("GeofenceSetup", "geofences added"))
+                        .addOnFailureListener(err -> Log.e("GeofenceSetup", "error with adding geofences"));
+            }
+
             // TODO: manually posting notifs for testing purposes
             // Enter notif sends in 5s, leave notif sends in 30s
             new Handler().postDelayed(() -> {
-                Context context = getApplicationContext();
-                Intent notifyIntent = new Intent(context, DialogueActivity.class);
-                // Set the Activity to start in a new, empty task.
-                notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                notifyIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.ENTER_STORE.toString());
-                // Create the PendingIntent.
-                PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                        context, (int) (Math.random() * 50), notifyIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-                );
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1234");
-                builder.setContentIntent(notifyPendingIntent);
-                builder.setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("You are entering a store")
-                        .setContentText("Check up on your budget")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setAutoCancel(true);
-
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                notificationManager.notify((int) (Math.random() * 50), builder.build());
+                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.ENTER_STORE);
             }, 1000 * 5);
 
             new Handler().postDelayed(() -> {
-                Context context = getApplicationContext();
-                Intent notifyIntent = new Intent(context, DialogueActivity.class);
-                // Set the Activity to start in a new, empty task.
-                notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                notifyIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.LEAVE_STORE.toString());
-                // Create the PendingIntent.
-                PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                        context, (int) (Math.random() * 50), notifyIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-                );
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1234");
-                builder.setContentIntent(notifyPendingIntent);
-                builder.setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("You left the store")
-                        .setContentText("Update your budget")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setAutoCancel(true);
-
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                notificationManager.notify((int) (Math.random() * 50), builder.build());
+                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.LEAVE_STORE);
             }, 1000 * 30);
         }
-
-
-
 
         //HOME SCREEN LOGIC
         TextView receivedMoneyBudget = findViewById(R.id.receivedMoneyBudget);
@@ -175,18 +139,21 @@ public class HomeActivity extends AppCompatActivity{
         bottomNavigationView.setOnItemSelectedListener(item ->{
             int itemId = item.getItemId();
             if (itemId == R.id.add) {
-                Intent manualIntent = new Intent(this, ManualEntryActivity.class);
-                manualIntent.putExtra("SLIDER_VALUE_2", sliderValue2);
-                manualIntent.putExtra("SLIDER_VALUE_1", sliderValue1);
-                startActivity(manualIntent);
+                Intent dialogueIntent = new Intent(this, DialogueActivity.class);
+                dialogueIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                dialogueIntent.putExtra(Intent.EXTRA_TEXT, DialogueActivity.DialogueType.LEAVE_STORE.toString());
+                startActivity(dialogueIntent);
+                finish();
                 return true;
             } else if (itemId == R.id.recap) {
                 Intent recapIntent = new Intent(this, MonthlyRecapActivity.class);
                 startActivity(recapIntent);
+                finish();
                 return true;
             } else if (itemId == R.id.budget) {
                 Intent budgetIntent = new Intent(this, BudgetSetupActivity.class);
                 startActivity(budgetIntent);
+                finish();
                 return true;
             }
             return false;
@@ -326,6 +293,28 @@ public class HomeActivity extends AppCompatActivity{
 //        Optional<Budget> budget = UsePrefs.getBudgetForCurrentMonth(getApplicationContext());
     }
 
+    // https://developer.android.com/develop/sensors-and-location/location/geofencing
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (geofencePendingIntent != null) {
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.
+                FLAG_IMMUTABLE | FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
+    }
+
+    // https://developer.android.com/develop/sensors-and-location/location/geofencing
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(GeofenceBroadcastReceiver.getGeofencesList());
+        return builder.build();
+    }
+
 //    public void toMonthlyRecap(View v){
 //        Intent i = new Intent(this, MonthlyRecapActivity.class);
 //        startActivity(i);
@@ -340,5 +329,12 @@ public class HomeActivity extends AppCompatActivity{
 //        Intent i = new Intent(this, ManualEntryActivity.class);
 //        startActivity(i);
 //    }
+
+    public void toStats(View v) {
+        // Button submitButton = findViewById(R.id.button_fast_fashion_stats);
+        Intent i = new Intent(this, FastFashionStatsActivity.class);
+        startActivity(i);
+    }
+
 
 }
