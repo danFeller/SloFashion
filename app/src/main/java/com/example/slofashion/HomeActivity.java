@@ -6,11 +6,7 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
@@ -28,34 +24,22 @@ import com.example.slofashion.notifications.GeofenceBroadcastReceiver;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     private PendingIntent geofencePendingIntent;
-
+    private static final int LOC_NOTI_REQUEST_CODE = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,12 +73,8 @@ public class HomeActivity extends AppCompatActivity {
                 notificationManager.createNotificationChannel(channel);
             }
 
-            GeofencingClient geofencingClient = LocationServices.getGeofencingClient(this);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
-                        .addOnSuccessListener(unused -> Log.i("GeofenceSetup", "geofences added"))
-                        .addOnFailureListener(err -> Log.e("GeofenceSetup", "error with adding geofences"));
-            }
+            checkLocNotiPerms();
+            setGeofences();
 
             // TODO: manually posting notifs for testing purposes
             // Enter notif sends in 5s, leave notif sends in 30s
@@ -260,6 +240,20 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
+    private void checkLocNotiPerms() {
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        || ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // You can directly ask for the permission.
+            // Dont need Manifest.permission.POST_NOTIFICATIONS, it's in normal category, should be there
+            requestPermissions(
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                    LOC_NOTI_REQUEST_CODE);
+        }
+    }
+
+    @Deprecated
     private void storageTestingMethod() {
         //getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).edit().clear().apply();
         List<Budget> budgets = UsePrefs.getAllBudgets(getApplicationContext());
@@ -315,6 +309,8 @@ public class HomeActivity extends AppCompatActivity {
         return builder.build();
     }
 
+
+
 //    public void toMonthlyRecap(View v){
 //        Intent i = new Intent(this, MonthlyRecapActivity.class);
 //        startActivity(i);
@@ -336,5 +332,39 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case LOC_NOTI_REQUEST_CODE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                    setGeofences();
+                } else {
+                    // Explain to the user that the feature is unavailable because
+                    // the feature requires a permission that the user has denied.
+                    // At the same time, respect the user's decision. Don't link to
+                    // system settings in an effort to convince the user to change
+                    // their decision.
+                    Toast.makeText(this, "Alerts when entering or leaving shopping districts not enabled.", Toast.LENGTH_LONG).show();
+                }
+                return;
+        }
+        // Other 'case' lines to check for other
+        // permissions this app might request.
+    }
+
+    private void setGeofences() {
+        GeofencingClient geofencingClient = LocationServices.getGeofencingClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+                    .addOnSuccessListener(unused -> Log.i("GeofenceSetup", "geofences added"))
+                    .addOnFailureListener(err -> Log.e("GeofenceSetup", "error with adding geofences"));
+        }
+    }
 
 }
