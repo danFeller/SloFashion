@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import android.content.SharedPreferences;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
 
             // record the fact that the app has been started at least once
             settings.edit().putBoolean("my_first_time", false).commit();
-        }
+        } else
         //storageTestingMethod();
 
         // Logic to setup notification channel
@@ -74,17 +75,17 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             checkLocNotiPerms();
-            setGeofences();
+            setGeofences(false);
 
             // TODO: manually posting notifs for testing purposes
             // Enter notif sends in 5s, leave notif sends in 30s
-            new Handler().postDelayed(() -> {
-                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.ENTER_STORE);
-            }, 1000 * 5);
-
-            new Handler().postDelayed(() -> {
-                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.LEAVE_STORE);
-            }, 1000 * 30);
+//            new Handler().postDelayed(() -> {
+//                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.ENTER_STORE);
+//            }, 1000 * 5);
+//
+//            new Handler().postDelayed(() -> {
+//                GeofenceBroadcastReceiver.sendNotification(this, DialogueActivity.DialogueType.LEAVE_STORE);
+//            }, 1000 * 30);
         }
 
         //HOME SCREEN LOGIC
@@ -244,12 +245,23 @@ public class HomeActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
         || ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+        || ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // You can directly ask for the permission.
-            // Dont need Manifest.permission.POST_NOTIFICATIONS, it's in normal category, should be there
-            requestPermissions(
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                    LOC_NOTI_REQUEST_CODE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissions(
+                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION,  Manifest.permission.POST_NOTIFICATIONS },
+                        LOC_NOTI_REQUEST_CODE);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                requestPermissions(
+                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                        LOC_NOTI_REQUEST_CODE);
+            } else {
+                requestPermissions(
+                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                        LOC_NOTI_REQUEST_CODE);
+            }
         }
     }
 
@@ -296,8 +308,9 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
         // calling addGeofences() and removeGeofences().
-        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.
-                FLAG_IMMUTABLE | FLAG_UPDATE_CURRENT);
+        // Android 12 (sad face) https://www.flybuy.com/android-12-pendingintent-mutability-and-geofences
+        geofencePendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.
+                FLAG_MUTABLE | FLAG_UPDATE_CURRENT);
         return geofencePendingIntent;
     }
 
@@ -339,18 +352,18 @@ public class HomeActivity extends AppCompatActivity {
         switch (requestCode) {
             case LOC_NOTI_REQUEST_CODE:
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && IntStream.of(grantResults)
+                        .allMatch(grantRes -> grantRes == PackageManager.PERMISSION_GRANTED)) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
-                    setGeofences();
+                    setGeofences(true);
                 } else {
                     // Explain to the user that the feature is unavailable because
                     // the feature requires a permission that the user has denied.
                     // At the same time, respect the user's decision. Don't link to
                     // system settings in an effort to convince the user to change
                     // their decision.
-                    Toast.makeText(this, "Alerts when entering or leaving shopping districts not enabled.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Background alerts when entering or leaving shopping districts not enabled.", Toast.LENGTH_LONG).show();
                 }
                 return;
         }
@@ -358,12 +371,32 @@ public class HomeActivity extends AppCompatActivity {
         // permissions this app might request.
     }
 
-    private void setGeofences() {
+    private void setGeofences(boolean fromORPR) {
         GeofencingClient geofencingClient = LocationServices.getGeofencingClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
             geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
                     .addOnSuccessListener(unused -> Log.i("GeofenceSetup", "geofences added"))
-                    .addOnFailureListener(err -> Log.e("GeofenceSetup", "error with adding geofences"));
+                    .addOnFailureListener(err -> {
+                        Log.e("GeofenceSetup", "error adding geofences");
+                        Log.e("GeofenceSetup", Log.getStackTraceString(err));
+                    });
+        }
+
+        // Android 34+ workaround, need to request fine perms first, THEN get background perms
+        // https://stackoverflow.com/questions/64246883/android-11-users-can-t-grant-background-location-permission
+        if (fromORPR) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    ActivityCompat.requestPermissions(
+                            this,
+                            new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                            LOC_NOTI_REQUEST_CODE
+                    );
+                }
+            }
         }
     }
 

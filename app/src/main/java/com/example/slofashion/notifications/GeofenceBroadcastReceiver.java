@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
@@ -58,6 +59,16 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             String errorMessage = GeofenceStatusCodes
                     .getStatusCodeString(geofencingEvent.getErrorCode());
             Log.e(TAG, errorMessage);
+            return;
+        }
+
+        // get our request ids to only check our geofences
+        List<String> ourGeofencesRIDs = getGeofencesList().stream().map(Geofence::getRequestId).collect(Collectors.toList());
+        List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+
+        // if it didn't trigger any of our geofences, return
+        if (triggeringGeofences != null &&
+                triggeringGeofences.stream().noneMatch(gf -> ourGeofencesRIDs.contains(gf.getRequestId()))) {
             return;
         }
 

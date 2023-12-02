@@ -46,7 +46,7 @@
             android:name=".DialogueActivity">
         </activity>
 
-        <receiver android:name=".notifications.GeofenceBroadcastReceiver"/>
+        <receiver android:name=".notifications.GeofenceBroadcastReceiver" android:exported="true" android:enabled="true"/>
     </application>
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
