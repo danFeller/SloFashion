@@ -30,6 +30,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+            android:name=".BudgetSetupActivity">
+        </activity>
+        <activity
+            android:name=".ManualEntryActivity">
+        </activity>
+        <activity
+            android:name=".MonthlyRecapActivity">
+        </activity>
+        <activity
+            android:name=".FastFashionStatsActivity">
+        </activity>
+        <activity
+            android:name=".FastFashionPageTwoActivity">
+        </activity>
+        <activity
+            android:name=".FastFashionPageThreeActivity">
+        </activity>
+        <activity
+            android:name=".FastFashionPageFourActivity">
+        </activity>
+        <activity
+            android:name=".DialogueActivity">
+        </activity>
+
+        <receiver android:name=".notifications.GeofenceBroadcastReceiver" android:exported="true" android:enabled="true"/>
     </application>
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 </manifest>
